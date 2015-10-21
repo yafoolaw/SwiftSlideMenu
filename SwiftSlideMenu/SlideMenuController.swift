@@ -198,6 +198,11 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
     }
     
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
     // MARK: 手势相关方法
     public func addLeftGesture() {
     
@@ -307,8 +312,42 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
         switch panGesture.state {
         
-//        case UIGestureRecognizerState.Began:
+        case UIGestureRecognizerState.Began:
+            
+            LeftPanState.frameAtStartOfPan     = leftContainerView.frame
+            LeftPanState.startPointOfPan       = panGesture.locationInView(view)
+            LeftPanState.wasHiddenAtStartOfPan = isLeftHidden()
+            LeftPanState.wasOpenAtStartOfPan   = isLeftOpen()
+            
+            leftViewController?.beginAppearanceTransition(LeftPanState.wasHiddenAtStartOfPan, animated: true)
+            
+            addShadowToView(leftContainerView)
+            
+            setOpenWindowLevel()
+            
+        case UIGestureRecognizerState.Changed:
+            
+            let transaltion: CGPoint = panGesture.translationInView(panGesture.view!)
+            
+            leftContainerView.frame  = applyLeftTranslation(transaltion, toFrame: LeftPanState.frameAtStartOfPan)
+            
+            
+            
+            
+        default:
+            
+            break
         }
+    }
+    
+    public func isLeftOpen() -> Bool {
+    
+        return leftContainerView.frame.origin.x == 0
+    }
+    
+    public func isLeftHidden() -> Bool {
+    
+        return leftContainerView.frame.origin.x <= leftMinOrigin()
     }
     
     public func isRightOpen() -> Bool {
@@ -330,27 +369,90 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
     
         return CGRectGetWidth(view.frame)
     }
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override public func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func addShadowToView(targetContainerView: UIView) {
+        
+        targetContainerView.layer.masksToBounds = false
+        targetContainerView.layer.shadowOffset  = SlideMenuOptions.shadowOffset
+        targetContainerView.layer.shadowOpacity = Float(SlideMenuOptions.shadowOpacity)
+        targetContainerView.layer.shadowRadius  = SlideMenuOptions.shadowRadius
+        targetContainerView.layer.shadowPath    = UIBezierPath(rect: targetContainerView.bounds).CGPath
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    private func setOpenWindowLevel() {
+        
+        if SlideMenuOptions.hideStatusBar {
+        
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                if let window = UIApplication.sharedApplication().keyWindow {
+                
+                    window.windowLevel = UIWindowLevelStatusBar + 1
+                }
+            })
+        }
+    
     }
-    */
+    
+    private func setCloseWindowLevel() {
+    
+        if SlideMenuOptions.hideStatusBar {
+        
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                if let window = UIApplication.sharedApplication().keyWindow {
+                
+                    window.windowLevel = UIWindowLevelNormal
+                }
+            })
+        }
+    }
+    
+    private func applyLeftTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
+    
+        var newOrigin: CGFloat = toFrame.origin.x
+        newOrigin += translation.x
+        
+        let minOrigin: CGFloat = leftMinOrigin()
+        let maxOrigin: CGFloat = 0
+        var newFrame: CGRect   = toFrame
+        
+        if newOrigin < minOrigin {
+        
+            newOrigin = minOrigin
+            
+        } else if newOrigin > maxOrigin {
+        
+            newOrigin = maxOrigin
+        }
+        
+        newFrame.origin.x = newOrigin
+        
+        return newFrame
+    }
+    
+    private func applyRightTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
+    
+        var newOrigin: CGFloat = toFrame.origin.x
+        newOrigin += translation.x
+        
+        let minOrigin: CGFloat = rightMinOrigin()
+        let maxOrigin: CGFloat = rightMinOrigin() - rightContainerView.frame.size.width
+        
+        var newFrame: CGRect = toFrame
+        
+        if newOrigin > minOrigin {
+        
+            newOrigin = minOrigin
+            
+        } else if newOrigin < maxOrigin {
+        
+            newOrigin = maxOrigin
+        }
+        
+        newFrame.origin.x = newOrigin
+        
+        return newFrame
+    }
 
 }
