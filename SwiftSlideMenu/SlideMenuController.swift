@@ -198,15 +198,127 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
     }
     
+    // MARK: 手势相关方法
     public func addLeftGesture() {
     
         if leftViewController != nil {
         
             if leftPanGesture == nil {
             
-//                leftPanGesture = 
+                leftPanGesture = UIPanGestureRecognizer(target: self, action: "handleLeftPanGesture:")
+                leftPanGesture?.delegate = self;
+                view.addGestureRecognizer(leftPanGesture!)
+            }
+            
+            if leftTapGesture == nil {
+            
+                leftTapGesture = UITapGestureRecognizer(target: self, action: "toggleLeft")
+                leftTapGesture?.delegate = self
+                view.addGestureRecognizer(leftTapGesture!)
             }
         }
+    }
+    
+    public func addRightGesture() {
+    
+        if rightViewController != nil {
+        
+            if rightPanGesture == nil {
+            
+                rightPanGesture = UIPanGestureRecognizer(target: self, action: "handleRightGesture:")
+                rightPanGesture?.delegate = self
+                view.addGestureRecognizer(rightPanGesture!)
+            }
+            
+            if rightTapGesture == nil {
+            
+                rightTapGesture = UITapGestureRecognizer(target: self, action: "toggleRight")
+                rightTapGesture?.delegate = self
+                view.addGestureRecognizer(rightTapGesture!)
+            }
+        }
+    }
+    
+    public func removeLeftGesture() {
+    
+        if leftPanGesture != nil {
+        
+            view.removeGestureRecognizer(leftPanGesture!)
+            leftPanGesture = nil
+        }
+        
+        if leftTapGesture != nil {
+        
+            view.removeGestureRecognizer(leftTapGesture!)
+            leftTapGesture = nil
+        }
+    }
+    
+    public func removeRightGesture() {
+    
+        if rightPanGesture != nil {
+        
+            view.removeGestureRecognizer(rightPanGesture!)
+            rightPanGesture = nil
+        }
+        
+        if rightTapGesture != nil {
+        
+            view.removeGestureRecognizer(rightTapGesture!)
+            rightTapGesture = nil
+        }
+    }
+    
+    public func isTargetViewController() -> Bool {
+    
+        // Function to determine the target ViewController
+        // Please to override it if necessary
+        return true
+    }
+    
+    public func track(trackAction: TrackAction) {
+    
+        // function is for tracking
+        // Please to override it if necessary
+    }
+    
+    struct LeftPanState {
+        
+        static var frameAtStartOfPan:     CGRect  = CGRectZero
+        
+        static var startPointOfPan:       CGPoint = CGPointZero
+        
+        static var wasOpenAtStartOfPan:   Bool    = false
+        
+        static var wasHiddenAtStartOfPan: Bool    = false
+    }
+    
+    func handleLeftPanGesture(panGesture: UIPanGestureRecognizer) {
+    
+        if isTargetViewController() == false {
+        
+            return
+        }
+        
+        if isRightOpen() {
+        
+            return
+        }
+        
+        switch panGesture.state {
+        
+//        case UIGestureRecognizerState.Began:
+        }
+    }
+    
+    public func isRightOpen() -> Bool {
+    
+        return rightContainerView.frame.origin.x == CGRectGetWidth(view.bounds) - rightContainerView.frame.size.width
+    }
+    
+    public func isRightHidden() -> Bool {
+    
+        return rightContainerView.frame.origin.x >= CGRectGetWidth(view.bounds)
     }
     
     private func leftMinOrigin() -> CGFloat {
