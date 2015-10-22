@@ -379,9 +379,19 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
         UIView.animateWithDuration(duration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { [weak self]() -> Void in
             
+            if let strongSelf = self {
             
+                strongSelf.leftContainerView.frame     = frame
+                
+                strongSelf.opacityView.layer.opacity   = Float(SlideMenuOptions.contentViewOpacity)
+                
+                strongSelf.mainContainerView.transform = CGAffineTransformMakeScale(SlideMenuOptions.contentViewScale, SlideMenuOptions.contentViewScale)
+            }
             
-            }, completion: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
+            }) { [weak self](Bool) -> Void in
+                
+                
+        }
     }
     
     public func isLeftOpen() -> Bool {
