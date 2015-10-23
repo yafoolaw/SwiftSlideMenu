@@ -347,6 +347,18 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
                 
                     leftViewController?.beginAppearanceTransition(true, animated: true)
                 }
+                
+                openLeftWithVelocity(panInfo.velocity)
+                
+                track(.FlickOpen)
+            } else {
+            
+                if LeftPanState.wasHiddenAtStartOfPan {
+                
+                    leftViewController?.beginAppearanceTransition(false, animated: true)
+                }
+                
+                
             }
             
             
@@ -358,7 +370,7 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
     
     public func openLeftWithVelocity(velocity: CGFloat) {
     
-        let xOrigin: CGFloat = leftContainerView.frame.origin.x
+        let xOrigin:      CGFloat = leftContainerView.frame.origin.x
         
         let finalXOrigin: CGFloat = 0
         
@@ -390,7 +402,124 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
             
             }) { [weak self](Bool) -> Void in
                 
+                if let strongSelf = self {
                 
+                    strongSelf.disableContentInteraction()
+                    strongSelf.leftViewController?.endAppearanceTransition()
+                }
+                
+        }
+    }
+    
+    public func openRightWithVelocity(velocity: CGFloat) {
+    
+        let xOrigin:      CGFloat = rightContainerView.frame.origin.x
+        
+        let finalXOrigin: CGFloat = 0
+        
+        var frame = rightContainerView.frame
+        frame.origin.x = finalXOrigin
+        
+        var duration: NSTimeInterval = Double(SlideMenuOptions.animationDuration)
+        
+        if velocity != 0 {
+        
+            duration = Double(fabs(xOrigin - CGRectGetWidth(view.bounds)) / velocity)
+            duration = Double(fmax(0.1, fmin(1.0, duration)))
+        }
+        
+        addShadowToView(rightContainerView)
+        
+        UIView.animateWithDuration(duration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { [weak self]() -> Void in
+            
+            if let strongSelf = self {
+            
+                strongSelf.rightContainerView.frame    = frame
+                strongSelf.opacityView.layer.opacity   = Float(SlideMenuOptions.contentViewOpacity)
+                strongSelf.mainContainerView.transform = CGAffineTransformMakeScale(SlideMenuOptions.contentViewScale, SlideMenuOptions.contentViewScale)
+            }
+            
+            }) { [weak self](Bool) -> Void in
+                
+                if let strongSelf = self {
+                
+                    strongSelf.disableContentInteraction()
+                    strongSelf.rightViewController?.endAppearanceTransition()
+                }
+        }
+    }
+    
+    public func closeLeftWithVelocity(velocity: CGFloat) {
+    
+        let xOrigin:      CGFloat = leftContainerView.frame.origin.x
+        
+        let finalXOrigin: CGFloat = leftMinOrigin()
+        
+        var frame: CGRect = leftContainerView.frame
+        frame.origin.x    = finalXOrigin
+        
+        var duration: NSTimeInterval = Double(SlideMenuOptions.animationDuration)
+        
+        if velocity != 0 {
+        
+            duration = Double(fabs(xOrigin - finalXOrigin) / velocity)
+            duration = Double(fmax(0.1, fmin(1.0, duration)))
+        }
+        
+        UIView.animateWithDuration(duration, delay: 0, options: .CurveEaseInOut, animations: { [weak self]() -> Void in
+            
+            if let strongSelf = self {
+                
+                strongSelf.leftContainerView.frame     = frame
+                strongSelf.opacityView.layer.opacity   = 0.0
+                strongSelf.mainContainerView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            }
+            
+            }) { [weak self](Bool) -> Void in
+                
+                if let strongSelf = self {
+                    
+                    strongSelf.removeShadow(strongSelf.leftContainerView)
+                    strongSelf.enableContentInteraction()
+                    strongSelf.leftViewController?.endAppearanceTransition()
+                }
+        }
+        
+    }
+    
+    public func closeRightWithVelocity(velocity: CGFloat) {
+    
+        let xOrigin:      CGFloat = rightContainerView.frame.origin.x
+        
+        let finalXOrigin: CGFloat = CGRectGetWidth(view.bounds)
+        
+        var frame: CGRect = rightContainerView.frame
+        frame.origin.x    = finalXOrigin
+        
+        var duration: NSTimeInterval = Double(SlideMenuOptions.animationDuration)
+        
+        if velocity != 0 {
+            
+            duration = Double(fabs(xOrigin - CGRectGetWidth(view.bounds)) / velocity)
+            duration = Double(fmax(0.1, fmin(1.0, duration)))
+        }
+        
+        UIView.animateWithDuration(duration, delay: 0, options: .CurveEaseInOut, animations: { [weak self]() -> Void in
+            
+            if let strongSelf = self {
+                
+                strongSelf.rightContainerView.frame    = frame
+                strongSelf.opacityView.layer.opacity   = 0.0
+                strongSelf.mainContainerView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            }
+            
+            }) { [weak self](Bool) -> Void in
+                
+                if let strongSelf = self {
+                    strongSelf.removeShadow(strongSelf.rightContainerView)
+                    strongSelf.enableContentInteraction()
+                    strongSelf.rightViewController?.endAppearanceTransition()
+                }
         }
     }
     
@@ -541,6 +670,23 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         targetContainerView.layer.shadowOpacity = Float(SlideMenuOptions.shadowOpacity)
         targetContainerView.layer.shadowRadius  = SlideMenuOptions.shadowRadius
         targetContainerView.layer.shadowPath    = UIBezierPath(rect: targetContainerView.bounds).CGPath
+    }
+    
+    private func removeShadow(targetContainerView: UIView) {
+    
+        targetContainerView.layer.masksToBounds = true
+        
+        mainContainerView.layer.opacity = 1.0
+    }
+    
+    private func disableContentInteraction() {
+    
+        mainContainerView.userInteractionEnabled = false
+    }
+    
+    private func enableContentInteraction() {
+    
+        mainContainerView.userInteractionEnabled = true
     }
     
     private func setOpenWindowLevel() {
