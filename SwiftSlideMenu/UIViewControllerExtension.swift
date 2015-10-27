@@ -12,6 +12,19 @@ extension UIViewController {
 
     func setNavigationBarItem() {
     
-//        self.ad
+        self.addLeftBarButtonWithImage(UIImage(named: "ic_menu_black_24dp")!)
+        self.addRightButtonWithImage(UIImage(named: "ic_notifications_black_24dp")!)
+        self.slideMenuController()?.removeLeftGesture()
+        self.slideMenuController()?.removeRightGesture()
+        self.slideMenuController()?.addLeftGesture()
+        self.slideMenuController()?.addRightGesture()
+    }
+    
+    func removeNavigationItem() {
+    
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem = nil
+        self.slideMenuController()?.removeLeftGesture()
+        self.slideMenuController()?.removeRightGesture()
     }
 }

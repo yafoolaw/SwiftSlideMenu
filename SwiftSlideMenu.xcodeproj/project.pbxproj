@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E07766471BD72D5300891FB7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07766461BD72D5300891FB7 /* AppDelegate.swift */; };
-		E07766491BD72D5300891FB7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07766481BD72D5300891FB7 /* ViewController.swift */; };
 		E077664C1BD72D5300891FB7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E077664A1BD72D5300891FB7 /* Main.storyboard */; };
 		E077664E1BD72D5300891FB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E077664D1BD72D5300891FB7 /* Assets.xcassets */; };
 		E07766511BD72D5300891FB7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E077664F1BD72D5300891FB7 /* LaunchScreen.storyboard */; };
@@ -29,7 +28,6 @@
 /* Begin PBXFileReference section */
 		E07766431BD72D5300891FB7 /* SwiftSlideMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftSlideMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E07766461BD72D5300891FB7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E07766481BD72D5300891FB7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E077664B1BD72D5300891FB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E077664D1BD72D5300891FB7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E07766501BD72D5300891FB7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 				E07766581BD72DDD00891FB7 /* Source */,
 				E07766591BD72E0000891FB7 /* Extension */,
 				E07766461BD72D5300891FB7 /* AppDelegate.swift */,
-				E07766481BD72D5300891FB7 /* ViewController.swift */,
 				E077664A1BD72D5300891FB7 /* Main.storyboard */,
 				E077664D1BD72D5300891FB7 /* Assets.xcassets */,
 				E077664F1BD72D5300891FB7 /* LaunchScreen.storyboard */,
@@ -203,7 +200,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0AA58171BDE097200B34404 /* MainViewController.swift in Sources */,
-				E07766491BD72D5300891FB7 /* ViewController.swift in Sources */,
 				E07766471BD72D5300891FB7 /* AppDelegate.swift in Sources */,
 				E077665F1BD7337F00891FB7 /* UIViewControllerExtension.swift in Sources */,
 				E0AA58261BDE1DC200B34404 /* BaseTableViewCell.swift in Sources */,

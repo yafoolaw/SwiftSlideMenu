@@ -2,7 +2,7 @@
 //  NonMenuController.swift
 //  SwiftSlideMenu
 //
-//  Created by FrankLiuon 15/10/26.
+//  Created by FrankLiu on 15/10/26.
 //  Copyright © 2015年 刘大帅. All rights reserved.
 //
 
@@ -15,12 +15,32 @@ class NonMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let label = UILabel(frame: CGRectMake(0, 100, 200, 60))
+        
+        label.center.x = view.center.x
+        label.text     = "NonMenuViewController"
+        
+        view.addSubview(label)
+        
+        let button = UIButton(type: .Custom)
+        
+        button.frame    = CGRectMake(0, 200, 200, 60)
+        button.center.x = view.center.x
+        button.setTitle("ToMainViewController", forState: .Normal)
+        button.addTarget(self, action: "didTouchToMain:", forControlEvents: .TouchUpInside)
+        
+        view.addSubview(button)
 
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.setNavigationBarItem()
+    }
+    
+    func didTouchToMain(sender: UIButton) {
+    
+        delegate?.changeViewController(LeftMenu.Main)
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

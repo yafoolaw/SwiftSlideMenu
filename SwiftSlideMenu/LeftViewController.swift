@@ -32,16 +32,15 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
     var goViewController:    UIViewController!
     var nonMenuViewController: UIViewController!
     
-    required init?(coder aDecoder: NSCoder) {
-        
-        super.init(coder: aDecoder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView = UITableView(frame: view.bounds, style: .Plain)
+        tableView.dataSource = self
+        tableView.delegate   = self
         tableView.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1.0)
         tableView.registerCellClass(BaseTableViewCell.self)
+        view.addSubview(tableView)
         
         swiftViewController        = UINavigationController(rootViewController: SwiftViewController())
         
@@ -78,7 +77,7 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
         
         if let menu = LeftMenu(rawValue: indexPath.item) {
         
-            
+            self.changeViewController(menu)
         }
     }
     
@@ -87,7 +86,24 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
         switch menu {
         
         case .Main:
-            self.slideMenuController()?.changeMain
+            
+            self.slideMenuController()?.changeMainViewController(self.mainViewController, close: true)
+            
+        case .Swift:
+            
+            self.slideMenuController()?.changeMainViewController(self.swiftViewController, close: true)
+            
+        case .Java:
+            
+            self.slideMenuController()?.changeMainViewController(self.javaViewController, close: true)
+            
+        case .Go:
+            
+            self.slideMenuController()?.changeMainViewController(self.goViewController, close: true)
+            
+        case .NonMenu:
+            
+            self.slideMenuController()?.changeMainViewController(self.nonMenuViewController, close: true)
         }
     }
 

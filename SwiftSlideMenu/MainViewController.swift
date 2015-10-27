@@ -13,6 +13,15 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = UIColor.grayColor()
+        
+        let label = UILabel(frame: CGRectMake(0, 100, 200, 60))
+        
+        label.center.x = view.center.x
+        
+        label.text = "MainViewController"
+        
+        view.addSubview(label)
     }
     
     override func viewWillAppear(animated: Bool) {
