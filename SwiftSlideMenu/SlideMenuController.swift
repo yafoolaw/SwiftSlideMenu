@@ -853,6 +853,53 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         return panInfo
     }
     
+    private func applyLeftTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
+        
+        var newOrigin: CGFloat = toFrame.origin.x
+        newOrigin += translation.x
+        
+        let minOrigin: CGFloat = leftMinOrigin()
+        let maxOrigin: CGFloat = 0
+        var newFrame: CGRect   = toFrame
+        
+        if newOrigin < minOrigin {
+            
+            newOrigin = minOrigin
+            
+        } else if newOrigin > maxOrigin {
+            
+            newOrigin = maxOrigin
+        }
+        
+        newFrame.origin.x = newOrigin
+        
+        return newFrame
+    }
+    
+    private func applyRightTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
+        
+        var newOrigin: CGFloat = toFrame.origin.x
+        newOrigin += translation.x
+        
+        let minOrigin: CGFloat = rightMinOrigin()
+        let maxOrigin: CGFloat = rightMinOrigin() - rightContainerView.frame.size.width
+        
+        var newFrame: CGRect = toFrame
+        
+        if newOrigin > minOrigin {
+            
+            newOrigin = minOrigin
+            
+        } else if newOrigin < maxOrigin {
+            
+            newOrigin = maxOrigin
+        }
+        
+        newFrame.origin.x = newOrigin
+        
+        return newFrame
+    }
+    
     private func getOpenedLeftRatio() -> CGFloat {
     
         let width: CGFloat = leftContainerView.frame.size.width
@@ -921,6 +968,15 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         targetContainerView.layer.masksToBounds = true
         
         mainContainerView.layer.opacity = 1.0
+    }
+    
+    private func removeContentOpacity() {
+        opacityView.layer.opacity = 0.0
+    }
+    
+    
+    private func addContentOpacity() {
+        opacityView.layer.opacity = Float(SlideMenuOptions.contentViewOpacity)
     }
     
     private func disableContentInteraction() {
@@ -1025,51 +1081,59 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         enableContentInteraction()
     }
     
-    private func applyLeftTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
-    
-        var newOrigin: CGFloat = toFrame.origin.x
-        newOrigin += translation.x
+    //pragma mark – UIGestureRecognizerDelegate
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         
-        let minOrigin: CGFloat = leftMinOrigin()
-        let maxOrigin: CGFloat = 0
-        var newFrame: CGRect   = toFrame
+        let point: CGPoint = touch.locationInView(view)
         
-        if newOrigin < minOrigin {
-        
-            newOrigin = minOrigin
-            
-        } else if newOrigin > maxOrigin {
-        
-            newOrigin = maxOrigin
+        if gestureRecognizer == leftPanGesture {
+            return slideLeftForGestureRecognizer(gestureRecognizer, point: point)
+        } else if gestureRecognizer == rightPanGesture {
+            return slideRightViewForGestureRecognizer(gestureRecognizer, withTouchPoint: point)
+        } else if gestureRecognizer == leftTapGesture {
+            return isLeftOpen() && !isPointContainedWithinLeftRect(point)
+        } else if gestureRecognizer == rightTapGesture {
+            return isRightOpen() && !isPointContainedWithinRightRect(point)
         }
         
-        newFrame.origin.x = newOrigin
-        
-        return newFrame
+        return true
     }
     
-    private func applyRightTranslation(translation: CGPoint, toFrame: CGRect) -> CGRect {
+    private func slideLeftForGestureRecognizer( gesture: UIGestureRecognizer, point:CGPoint) -> Bool{
+        return isLeftOpen() || SlideMenuOptions.panFromBezel && isLeftPointContainedWithinBezelRect(point)
+    }
     
-        var newOrigin: CGFloat = toFrame.origin.x
-        newOrigin += translation.x
+    private func isLeftPointContainedWithinBezelRect(point: CGPoint) -> Bool{
+        var leftBezelRect: CGRect = CGRectZero
+        var tempRect: CGRect = CGRectZero
+        let bezelWidth: CGFloat = SlideMenuOptions.leftBezelWidth
         
-        let minOrigin: CGFloat = rightMinOrigin()
-        let maxOrigin: CGFloat = rightMinOrigin() - rightContainerView.frame.size.width
+        CGRectDivide(view.bounds, &leftBezelRect, &tempRect, bezelWidth, CGRectEdge.MinXEdge)
+        return CGRectContainsPoint(leftBezelRect, point)
+    }
+    
+    private func isPointContainedWithinLeftRect(point: CGPoint) -> Bool {
+        return CGRectContainsPoint(leftContainerView.frame, point)
+    }
+    
+    
+    
+    private func slideRightViewForGestureRecognizer(gesture: UIGestureRecognizer, withTouchPoint point: CGPoint) -> Bool {
+        return isRightOpen() || SlideMenuOptions.rightPanFromBezel && isRightPointContainedWithinBezelRect(point)
+    }
+    
+    private func isRightPointContainedWithinBezelRect(point: CGPoint) -> Bool {
+        var rightBezelRect: CGRect = CGRectZero
+        var tempRect: CGRect = CGRectZero
+        let bezelWidth: CGFloat = CGRectGetWidth(view.bounds) - SlideMenuOptions.rightBezelWidth
         
-        var newFrame: CGRect = toFrame
+        CGRectDivide(view.bounds, &tempRect, &rightBezelRect, bezelWidth, CGRectEdge.MinXEdge)
         
-        if newOrigin > minOrigin {
-        
-            newOrigin = minOrigin
-            
-        } else if newOrigin < maxOrigin {
-        
-            newOrigin = maxOrigin
-        }
-        
-        newFrame.origin.x = newOrigin
-        
-        return newFrame
+        return CGRectContainsPoint(rightBezelRect, point)
+    }
+    
+    private func isPointContainedWithinRightRect(point: CGPoint) -> Bool {
+        return CGRectContainsPoint(rightContainerView.frame, point)
     }
 
 }
