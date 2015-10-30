@@ -38,7 +38,7 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
         tableView = UITableView(frame: view.bounds, style: .Plain)
         tableView.dataSource = self
         tableView.delegate   = self
-        tableView.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1.0)
+        tableView.separatorColor = UIColor.brownColor()
         tableView.registerCellClass(BaseTableViewCell.self)
         view.addSubview(tableView)
         
@@ -63,10 +63,10 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
         
         let cell: BaseTableViewCell = BaseTableViewCell(style: .Subtitle, reuseIdentifier: BaseTableViewCell.identifier)
         
-        cell.backgroundColor = UIColor(red: 64/255, green: 170/255, blue: 239/255, alpha: 1.0)
+        cell.backgroundColor = UIColor.purpleColor()
         
         cell.textLabel?.font      = UIFont.italicSystemFontOfSize(18)
-        cell.textLabel?.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
+        cell.textLabel?.textColor = UIColor.grayColor()
         cell.textLabel?.text      = menus[indexPath.row]
         
         return cell
