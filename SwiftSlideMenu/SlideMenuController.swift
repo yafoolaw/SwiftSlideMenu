@@ -154,26 +154,16 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         view.insertSubview(mainContainerView, atIndex: 0)
         
         // opacityView
-        let opacityOffset: CGFloat = 0
-        
-        var opacityFrame: CGRect = view.bounds
-        opacityFrame.origin.y    += opacityOffset
-        opacityFrame.size.height -= opacityOffset
-        
-        opacityView = UIView(frame: opacityFrame)
+        opacityView = UIView(frame: view.bounds)
         opacityView.backgroundColor  = SlideMenuOptions.opacityViewBackgroundColor
         opacityView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         opacityView.layer.opacity    = 0
         view.insertSubview(opacityView, atIndex: 1)
         
         // leftContainerView
-        let leftOffset: CGFloat = 0
-        
         var leftFrame: CGRect = view.bounds
         leftFrame.size.width  =  SlideMenuOptions.leftViewWidth
         leftFrame.origin.x    =  leftMinOrigin()
-        leftFrame.origin.y    += leftOffset
-        leftFrame.size.height -= leftOffset
         
         leftContainerView = UIView(frame: leftFrame)
         leftContainerView.backgroundColor  = UIColor.clearColor()
@@ -181,13 +171,9 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         view.insertSubview(leftContainerView, atIndex: 2)
         
         // rightContainerView
-        let rightOffset: CGFloat = 0
-        
         var rightFrame: CGRect =  view.bounds
         rightFrame.size.width  =  SlideMenuOptions.rightViewWidth
         rightFrame.origin.x    =  rightMinOrigin()
-        rightFrame.origin.y    += rightOffset
-        rightFrame.size.height -= rightOffset
         
         rightContainerView = UIView(frame: rightFrame)
         rightContainerView.backgroundColor  = UIColor.clearColor()
@@ -210,7 +196,7 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
         rightContainerView.hidden = true
         
-        coordinator.animateAlongsideTransition(nil) { (context: UIViewControllerTransitionCoordinatorContext) -> Void in
+        coordinator.animateAlongsideTransition(nil) { (context: UIViewControllerTransitionCoordinatorContext!) -> Void in
             
             self.closeLeftNonAnimation()
             
@@ -232,6 +218,7 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
                 self.addRightGesture()
             }
         }
+        
     }
     
     public override func viewDidLoad() {

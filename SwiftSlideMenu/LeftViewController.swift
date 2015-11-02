@@ -35,7 +35,7 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView = UITableView(frame: view.bounds, style: .Plain)
+        tableView = UITableView(frame: CGRectMake(0, 0, 200, 600), style: .Plain)
         tableView.dataSource = self
         tableView.delegate   = self
         tableView.separatorColor = UIColor.brownColor()
