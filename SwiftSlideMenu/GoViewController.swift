@@ -21,6 +21,8 @@ class GoViewController: UIViewController {
         
         label.text = "GoViewController"
         
+        label.textAlignment = .Center
+        
         view.addSubview(label)
     }
     

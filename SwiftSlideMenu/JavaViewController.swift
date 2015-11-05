@@ -21,6 +21,8 @@ class JavaViewController: UIViewController {
         
         label.text = "JavaViewController"
         
+        label.textAlignment = .Center
+        
         view.addSubview(label)
     }
     

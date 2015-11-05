@@ -21,6 +21,8 @@ class RightViewController: UIViewController {
         
         label.text = "RightViewController"
         
+        label.textAlignment = .Center
+        
         view.addSubview(label)
 
     }

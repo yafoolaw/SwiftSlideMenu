@@ -19,6 +19,7 @@ class NonMenuController: UIViewController {
         
         label.center.x = view.center.x
         label.text     = "NonMenuViewController"
+        label.textAlignment = .Center
         
         view.addSubview(label)
         

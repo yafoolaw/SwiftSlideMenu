@@ -21,6 +21,8 @@ class SwiftViewController: UIViewController {
         
         label.text = "SwiftViewController"
         
+        label.textAlignment = .Center
+        
         view.addSubview(label)
     }
     
