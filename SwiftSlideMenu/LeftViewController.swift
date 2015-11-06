@@ -26,14 +26,16 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
 
     var tableView: UITableView!
     var menus = ["Main", "Swift", "Java", "Go", "NonMenu"]
-    var mainViewController: UIViewController!
-    var swiftViewController: UIViewController!
-    var javaViewController:  UIViewController!
-    var goViewController:    UIViewController!
+    var mainViewController:    UIViewController!
+    var swiftViewController:   UIViewController!
+    var javaViewController:    UIViewController!
+    var goViewController:      UIViewController!
     var nonMenuViewController: UIViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        view.backgroundColor = UIColor.redColor()
         
         tableView = UITableView(frame: view.bounds, style: .Plain)
         tableView.dataSource = self
@@ -65,7 +67,7 @@ class LeftViewController: UIViewController, LeftMenuProtocol, UITableViewDataSou
         
         let cell: BaseTableViewCell = BaseTableViewCell(style: .Subtitle, reuseIdentifier: BaseTableViewCell.identifier)
         
-        cell.backgroundColor = UIColor.purpleColor()
+//        cell.backgroundColor = UIColor.purpleColor()
         
         cell.textLabel?.font      = UIFont.italicSystemFontOfSize(18)
         cell.textLabel?.textColor = UIColor.grayColor()

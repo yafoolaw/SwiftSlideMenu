@@ -747,34 +747,6 @@ public class SlideMenuController: UIViewController, UIGestureRecognizerDelegate 
         
     }
     
-    public func changeLeftViewController(leftViewController: UIViewController, closeLeft: Bool) {
-    
-        removeViewController(self.leftViewController)
-        
-        self.leftViewController = leftViewController
-        
-        setUpViewController(leftContainerView, targetViewController: leftViewController)
-        
-        if closeLeft {
-        
-            self.closeLeft()
-        }
-    }
-    
-    public func changeRightViewController(rightViewController: UIViewController, closeRight: Bool) {
-    
-        removeViewController(self.rightViewController)
-        
-        self.rightViewController = rightViewController
-        
-        setUpViewController(rightContainerView, targetViewController: rightViewController)
-        
-        if closeRight {
-        
-            self.closeRight()
-        }
-    }
-    
     private func leftMinOrigin() -> CGFloat {
     
         return -SlideMenuOptions.leftViewWidth

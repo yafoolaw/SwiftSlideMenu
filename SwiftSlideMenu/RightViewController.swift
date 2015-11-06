@@ -13,7 +13,7 @@ class RightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         view.backgroundColor = UIColor.redColor()
+         view.backgroundColor = UIColor.blueColor()
         
         let label = UILabel(frame: CGRectMake(0, 100, 200, 60))
         
